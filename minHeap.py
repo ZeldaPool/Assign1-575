@@ -5,6 +5,8 @@ Harsh Manoj Jain  -   027950193
 Smit Rana         -   027980613
 '''
 
+from collections import deque
+
 
 class Node(object):
     def __init__(self, val=0, left=None, right=None):
@@ -18,6 +20,32 @@ class NullNode(object):
         self.val = -1
         self.left = None
         self.right = None
+
+class OddFilter:
+    filtered_arr = []
+    
+    #self.filtered_arr.append(self.input_object[i])
+    
+    def __init__(self, input_object):
+        self.len_input_object = len(input_object)
+        self.i = 0
+    
+        while True:
+            try:
+                if self.has_next:
+                    self.next(self.i)
+            except StopIteration:
+                break
+
+    def has_next(self):
+        return True if self.i < self.len_input_object else False
+
+    def next(self):
+        if self.has_next(self.i):
+            if (self.input_object[i] % 2) != 0:
+                self.i += 1
+                return self.input_object[self.i-1]
+        return 
 
 
 class Heap(Node):
@@ -40,8 +68,6 @@ class Heap(Node):
     # Returns a list of odd values in the tree in preorder
     def odd_preorder(self, root, result):
         if root:
-            if (root.val % 2) != 0:
-                result.append(root.val)
             self.odd_preorder(root.left, result)
             self.odd_preorder(root.right, result)
         return result
@@ -63,6 +89,20 @@ class Heap(Node):
     def print_postorder(self, root):
         postorder_result = self.postorder(root, [])
         for i in postorder_result:
+            print(i, end=" ")
+    
+    # Returns a list of values in inorder
+    def inorder(self, root, result):
+        if root:
+            result.append(root.val)
+            self.inorder(root.left, result)
+            self.inorder(root.right, result)
+
+        return result
+
+    def print_inorder(self, root):
+        inorder_result = self.inorder(root, [])
+        for i in inorder_result:
             print(i, end=" ")
 
 
@@ -94,9 +134,44 @@ class HeapOperations(Heap) :
                 root.right = self.heap_insert(root.right, val)
 
         return root
-        
 
- 
+    def heap_toArray(self, root):
+        if root is None:
+            return
+
+        queue = deque()
+        queue.append(root)
+        heap_array = []
+
+        while queue:
+
+            curr = queue.popleft()
+
+            heap_array.append(curr.val)
+            # print(curr.val, end=' ')
+
+            if curr.left:
+                queue.append(curr.left)
+
+            if curr.right:
+                queue.append(curr.right)
+
+        return heap_array
+
+    def heap_toString(self, root):
+        heap_iter = iter(self.heap_toArray(root))
+        heap_string = "["
+
+        while True:
+            try:
+                heap_string += str(next(heap_iter))
+            except StopIteration:
+                break
+            
+            heap_string += ", "
+        return heap_string + "]"
+
+
 def heap_create():
 
     heapC = HeapOperations()
@@ -113,6 +188,12 @@ def heap_create():
     heapC2.print_odd_preorder(root)
     print("\nPostorder:", end=" ")
     heapC2.print_postorder(root)
+    print("\nToArray:", end=" ")
+    print(heapC.heap_toArray(root))
+    print("ToString:", end=" ")
+    print(heapC.heap_toString(root))
+    print("Inorder:", end=" ")
+    heapC2.print_inorder(root)
 
 
 if __name__ == "__main__":
