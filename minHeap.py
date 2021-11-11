@@ -12,21 +12,15 @@ class Node(object):
         self.left = left
         self.right = right
 
+
+class NullNode(object):
+    def __init__(self):
+        self.val = -1
+        self.left = None
+        self.right = None
+
+
 class Heap(Node):
-
-    def heap_create(self):
-        
-        root = Node(50)
-        self.heap_insert(root, 37)
-        self.heap_insert(root, 24)
-        self.heap_insert(root, 43)
-        self.heap_insert(root, 70)
-        self.heap_insert(root, 61)
-
-        print("Odds in Preorder:", end=" ")
-        self.minHeap.print_odd_preorder(root)
-        print("\nPostorder:", end=" ")
-        self.minHeap.print_postorder(root)
 
     def min_depth(self, root):
         if root is None:
@@ -71,6 +65,7 @@ class Heap(Node):
         for i in postorder_result:
             print(i, end=" ")
 
+
 class HeapOperations(Heap) :
         
     minHeap = Heap()
@@ -99,11 +94,29 @@ class HeapOperations(Heap) :
                 root.right = self.heap_insert(root.right, val)
 
         return root
+        
+
+ 
+def heap_create():
+
+    heapC = HeapOperations()
+    heapC2 = Heap()    
+       
+    root = Node(50)
+    heapC.heap_insert(root, 37)
+    heapC.heap_insert(root, 24)
+    heapC.heap_insert(root, 43)
+    heapC.heap_insert(root, 70)
+    heapC.heap_insert(root, 61)
+
+    print("Odds in Preorder:", end=" ")
+    heapC2.print_odd_preorder(root)
+    print("\nPostorder:", end=" ")
+    heapC2.print_postorder(root)
 
 
 if __name__ == "__main__":
 
-    heapOperations = Heap()
-    heapOperations.heap_create()
+    heap_create()
 
 
