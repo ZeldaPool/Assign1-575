@@ -96,29 +96,28 @@ class HeapOperations(Heap):
     minHeap = Heap()
         
     # Inserts value into the min heap and creates node when necessary
+    #ADD MINHEAP
     def add(self, root, val):
         if root is None:
             return Node(val)
 
         left_height = self.minHeap.min_depth(root.left)
         right_height = self.minHeap.min_depth(root.right)
-
-        temporary_node = val
-
+    
         if self.isMinOrMaxHeap(root, val):
             temporary_node = root.val
             root.val = val
 
-        if left_height <= right_height:
-            root.left = self.add(root.left, temporary_node)
-        else:
-            root.right = self.add(root.right, temporary_node)
+            if left_height <= right_height:
+                root.left = self.add(root.left, temporary_node)
+            else:
+                root.right = self.add(root.right, temporary_node)
 
-        """else:
+        else:
             if left_height <= right_height:
                 root.left = self.add(root.left, val)
             else:
-                root.right = self.add(root.right, val)"""
+                root.right = self.add(root.right, val)
         return root
         
     def isMinOrMaxHeap(self, root, val):
@@ -162,11 +161,11 @@ class HeapOperations(Heap):
 
 class MinHeap(HeapOperations):
     def isMinOrMaxHeap(self, root, val):
-        return val <= root.val
+        return root.val <= val
         
 class MaxHeap(HeapOperations):
     def isMinOrMaxHeap(self, root, val):
-        return val >= root.val
+        return root.val >= val
 
 def heap_create():
 
@@ -175,11 +174,11 @@ def heap_create():
     heapType = MinHeap()
 
     root = Node(50)
-    heapType.add(root, 37)
-    heapType.add(root, 24)
-    heapType.add(root, 43)
-    heapType.add(root, 70)
-    heapType.add(root, 61)
+    heapC.add(root, 37)
+    heapC.add(root, 24)
+    heapC.add(root, 43)
+    heapC.add(root, 70)
+    heapC.add(root, 61)
 
     print("Odds in Preorder:", end=" ")
     OddFilter(heapC2.preorder(root, []))
