@@ -37,8 +37,8 @@ class OddFilter:
 
 
 class Heap:
-    # def __init__(self, heapType):
-    #     self.heapType = heapType
+    def __init__(self, heapType):
+        self.heapType = heapType
 
     def min_depth(self, root):
         if root is None:
@@ -82,15 +82,15 @@ class Heap:
 
 class HeapOperations(Heap):
 
-    heap_object = Heap()
+    # heap_object = Heap()
 
     # Inserts value into the min heap and creates node when necessary
     def append(self, root, val):
         if root is None:
             return Node(val)
 
-        left_height = self.heap_object.min_depth(root.left)
-        right_height = self.heap_object.min_depth(root.right)
+        left_height = self.Heap.min_depth(root.left)
+        right_height = self.Heap.min_depth(root.right)
 
         temporary_node = val
 
@@ -155,26 +155,26 @@ class MaxHeap(HeapOperations):
 
 def heap_create():
 
-    heapC2 = Heap()
-    heapType = MinHeap()
+    heap_object = Heap(MinHeap)
+    # heapType = MinHeap()
 
     root = Node(50)
-    heapType.append(root, 37)
-    heapType.append(root, 24)
-    heapType.append(root, 43)
-    heapType.append(root, 70)
-    heapType.append(root, 61)
+    heap_object.heapType.append(root, 37)
+    # heapType.append(root, 24)
+    # heapType.append(root, 43)
+    # heapType.append(root, 70)
+    # heapType.append(root, 61)
 
     print("Odds in Preorder:", end=" ")
-    OddFilter(heapC2.preorder(root, []))
+    OddFilter(heap_object.preorder(root, []))
     print("\nPostorder:", end=" ")
-    heapC2.print_postorder(root)
+    heap_object.print_postorder(root)
     print("\nToArray:", end=" ")
-    print(heapType.toarray(root))
+    print(heap_object.toarray(root))
     print("ToString:", end=" ")
-    print(heapType.tostring(root))
+    print(heap_object.tostring(root))
     print("Inorder:", end=" ")
-    heapC2.print_inorder(root)
+    heap_object.print_inorder(root)
 
 
 if __name__ == "__main__":
