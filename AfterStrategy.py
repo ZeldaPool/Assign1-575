@@ -21,28 +21,38 @@ class NullNode(object):
         self.left = None
         self.right = None
 
-
 class OddFilter:
-    filtered_result = []
-
-    def __init__(self, unfiltered_result):
-        self.unfiltered_result = unfiltered_result
+    filtered_arr = []
+    
+    def __init__(self, unfiltered):
+        self.unfiltered = unfiltered
         self.filter()
-
+    
     def filter(self):
-        self.filtered_result = list(filter(lambda x: x % 2 == 1, self.unfiltered_result))
-        for i in self.filtered_result:
+        self.filtered_arr = list(filter(lambda x: x % 2 == 1, self.unfiltered))
+        for i in self.filtered_arr:
             print(i, end=" ")
-        return self.filtered_result
+        return self.filtered_arr
 
 
 class Heap:
     # def __init__(self, heapType):
     #     self.heapType = heapType
-
+        
     def min_depth(self, root):
         if root is None:
             return 0
+
+        # if root.left is None and root.right is None:
+        #     return 1
+
+        # if root.left is None:
+        #     return self.min_depth(root.right) + 1
+
+        # if root.right is None:
+        #     return self.min_depth(root.left) + 1
+
+        # return min(self.min_depth(root.left), self.min_depth(root.right)) + 1
         return 1 + max(self.min_depth(root.left), self.min_depth(root.right))
 
     # Returns a list of odd values in the tree in preorder
@@ -59,19 +69,21 @@ class Heap:
             self.postorder(root.left, result)
             self.postorder(root.right, result)
             result.append(root.val)
+
         return result
 
     def print_postorder(self, root):
         postorder_result = self.postorder(root, [])
         for i in postorder_result:
             print(i, end=" ")
-
+    
     # Returns a list of values in inorder
     def inorder(self, root, result):
         if root:
             result.append(root.val)
             self.inorder(root.left, result)
             self.inorder(root.right, result)
+
         return result
 
     def print_inorder(self, root):
@@ -81,16 +93,16 @@ class Heap:
 
 
 class HeapOperations(Heap):
-
-    heap_object = Heap()
-
+        
+    minHeap = Heap()
+        
     # Inserts value into the min heap and creates node when necessary
-    def append(self, root, val):
+    def add(self, root, val):
         if root is None:
             return Node(val)
 
-        left_height = self.heap_object.min_depth(root.left)
-        right_height = self.heap_object.min_depth(root.right)
+        left_height = self.minHeap.min_depth(root.left)
+        right_height = self.minHeap.min_depth(root.right)
 
         temporary_node = val
 
@@ -99,15 +111,21 @@ class HeapOperations(Heap):
             root.val = val
 
         if left_height <= right_height:
-            root.left = self.append(root.left, temporary_node)
+            root.left = self.add(root.left, temporary_node)
         else:
-            root.right = self.append(root.right, temporary_node)
-        return root
+            root.right = self.add(root.right, temporary_node)
 
+        """else:
+            if left_height <= right_height:
+                root.left = self.add(root.left, val)
+            else:
+                root.right = self.add(root.right, val)"""
+        return root
+        
     def isMinOrMaxHeap(self, root, val):
         pass
 
-    def toarray(self, root):
+    def heap_toArray(self, root):
         if root is None:
             return
 
@@ -120,6 +138,7 @@ class HeapOperations(Heap):
             curr = queue.popleft()
 
             heap_array.append(curr.val)
+            # print(curr.val, end=' ')
 
             if curr.left:
                 queue.append(curr.left)
@@ -129,50 +148,47 @@ class HeapOperations(Heap):
 
         return heap_array
 
-    def tostring(self, root):
-        heap_iterator = iter(self.toarray(root))
+    def heap_toString(self, root):
+        heap_iter = iter(self.heap_toArray(root))
         heap_string = "["
 
         while True:
             try:
-                heap_string += str(next(heap_iterator))
+                heap_string += str(next(heap_iter))
             except StopIteration:
                 break
-
+            
             heap_string += ", "
         return heap_string + "]"
-
 
 class MinHeap(HeapOperations):
     def isMinOrMaxHeap(self, root, val):
         return val <= root.val
-
-
+        
 class MaxHeap(HeapOperations):
     def isMinOrMaxHeap(self, root, val):
         return val >= root.val
 
-
 def heap_create():
 
-    heapC2 = Heap()
+    heapC2 = Heap()    
     heapType = MinHeap()
 
     root = Node(50)
-    heapType.append(root, 37)
-    heapType.append(root, 24)
-    heapType.append(root, 43)
-    heapType.append(root, 70)
-    heapType.append(root, 61)
+    heapType.add(root, 37)
+    heapType.add(root, 24)
+    heapType.add(root, 43)
+    heapType.add(root, 70)
+    heapType.add(root, 61)
 
     print("Odds in Preorder:", end=" ")
     OddFilter(heapC2.preorder(root, []))
     print("\nPostorder:", end=" ")
     heapC2.print_postorder(root)
     print("\nToArray:", end=" ")
-    print(heapType.toarray(root))
+    print(heapType.heap_toArray(root))
     print("ToString:", end=" ")
-    print(heapType.tostring(root))
+    print(heapType.heap_toString(root))
     print("Inorder:", end=" ")
     heapC2.print_inorder(root)
 
@@ -180,3 +196,5 @@ def heap_create():
 if __name__ == "__main__":
 
     heap_create()
+
+
